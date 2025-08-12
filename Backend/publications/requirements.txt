@@ -1,0 +1,46 @@
+# Framework Flask
+Flask==2.3.3
+Flask-SQLAlchemy==3.0.5
+Flask-JWT-Extended==4.5.3
+Flask-CORS==4.0.0
+
+# Base de données
+# Pour PostgreSQL en production (décommentez si nécessaire)
+# psycopg2-binary==2.9.7
+
+# Pour MySQL en production (décommentez si nécessaire) 
+PyMySQL==1.1.0
+
+# Outils de développement et utilitaires
+Werkzeug==2.3.7
+python-dotenv==1.0.0
+
+# Gestion des requêtes HTTP entre microservices
+requests==2.31.0
+
+# Sérialisation JSON améliorée
+jsonify==0.5
+cryptography==39.0.1
+
+# Validation et parsing de données
+marshmallow==3.20.1
+
+# Gestion du temps et des dates
+python-dateutil==2.8.2
+
+# Variables d'environnement et configuration
+click==8.1.7
+
+# Sécurité et hachage
+bcrypt==4.0.1
+
+# WSGI server pour la production
+gunicorn==21.2.0
+
+# Monitoring et logging (optionnel)
+# flask-limiter==3.5.0  # Rate limiting
+# flask-migrate==4.0.5  # Migrations de base de données
+
+# Pour les tests (optionnel)
+# pytest==7.4.2
+# pytest-flask==1.2.0

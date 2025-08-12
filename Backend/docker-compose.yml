@@ -1,0 +1,117 @@
+services:
+  
+  db_user_service:
+    image: mysql:latest
+    container_name: mysql-user-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: projet5_user
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-user-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "-proot"]
+      interval: 3s
+      timeout: 1s
+      retries: 5
+
+
+  db_reservation_service:
+    image: mysql:latest
+    container_name: mysql-reservation-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: projet5_reservation
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-reservation-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "-proot"]
+      interval: 3s
+      timeout: 1s
+      retries: 5
+      
+  db_publications_service:
+    image: mysql:latest
+    container_name: mysql-publications-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: projet5_publications
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql-publications-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "-proot"]
+      interval: 3s
+      timeout: 1s
+      retries: 5
+      
+  
+  user_service:
+    build: ./user 
+    container_name: user-service-container
+    ports:
+      - "5000:5000"
+    environment:
+      - MYSQL_HOST=db_user_service
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+      - MYSQL_DATABASE=projet5_user
+    depends_on:
+      db_user_service:
+        condition: service_healthy
+  publications_service:
+    build: ./publications
+    container_name: publications-service-container
+    ports:
+      - "5004:5004"
+    environment:
+      - MYSQL_HOST=db_publications_service
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+      - MYSQL_DATABASE=projet5_publications
+    depends_on:
+      db_publications_service:
+        condition: service_healthy
+      
+      
+
+
+  reservation_service:
+    build: ./reservation
+    container_name: reservation-service-container
+    ports:
+      - "5002:5002"
+    environment:
+      - MYSQL_HOST=db_reservation_service
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+      - MYSQL_DATABASE=projet5_reservation
+    depends_on:
+      db_reservation_service:
+        condition: service_healthy
+
+  #  payment_service:
+  #    build: ./payment            
+  #    container_name: payment-service-container
+  #    ports:
+  #      - "5003:5003"             
+  #    env_file:                   
+  #      - ./payment/.env 
+      
+
+
+
+volumes:
+  mysql-user-data:
+  mysql-reservation-data:
+  mysql-publications-data:
